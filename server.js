@@ -1,14 +1,20 @@
-const express = require('express');
-const path = require('path');
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
 const app = express();
-const PORT = process.env.PORT || 10000; // Render assigns a port automatically
+const PORT = process.env.PORT || 10000;
 
-// Change 'dist' to 'build' if you are using Create React App instead of Vite
-app.use(express.static(path.join(__dirname, 'dist')));
+// Fix __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Handles any requests that don't match the ones above to prevent 404 errors
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Serve static files (Vite = dist, CRA = build)
+app.use(express.static(path.join(__dirname, "dist")));
+
+// Handle React Router (SPA fallback)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 app.listen(PORT, () => {
