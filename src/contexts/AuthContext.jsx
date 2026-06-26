@@ -20,6 +20,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await authApi.login(credentials);
+      
+      // Check if response contains the expected fields
+      if (!response.accessToken || !response.user) {
+        const errorMessage = response.message || 'Login failed. Please try again.';
+        const error = new Error(errorMessage);
+        error.response = { data: { message: errorMessage } };
+        throw error;
+      }
+      
       const { accessToken, refreshToken, user } = response;
       
       localStorage.setItem("token", accessToken);
