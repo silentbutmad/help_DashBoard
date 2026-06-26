@@ -2,8 +2,16 @@ import api from '../utils/axios';
 
 export const authApi = {
   login: async (credentials) => {
-    const response = await api.post('/auth/login', credentials);
-    return response.data;
+    console.log('Making login request with:', credentials); // Debug log
+    try {
+      const response = await api.post('/auth/login', credentials);
+      console.log('Raw API response:', response); // Debug log
+      console.log('Response data:', response.data); // Debug log
+      return response.data;
+    } catch (error) {
+      console.error('API request failed:', error); // Debug log
+      throw error;
+    }
   },
 
   register: async (userData) => {

@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await authApi.login(credentials);
+      console.log('Login response:', response); // Debug log
       
       // Check if response contains the expected fields
       if (!response.accessToken || !response.user) {
@@ -38,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       
       return response;
     } catch (error) {
+      console.error('Login error:', error); // Debug log
       throw error;
     }
   };
